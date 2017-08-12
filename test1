@@ -35,69 +35,40 @@ long long int getValidElement(const char* error,int position) {
         else return inputNumber;
     }
 }
+void changeSize(int sizeArray,int **array)
+{
+    *array =realloc(*array, (sizeArray) * sizeof (long long int));
+}
 //user's input
-void input(int *sizeArray,long long int *array)
+void input(int *sizeArray,long long int **array)
 {
     printf("Please enter size of array: ");
     *sizeArray=getValidSize(0,INT_MAX,"Invalid size of array!! Just enter integer: ");
-    array=(long long int *)realloc(array,((*sizeArray)+1)*sizeof(long long int));
-    //array=(long long int *)realloc(array,(*sizeArray)*sizeof(long long int));
-    //array=(long long int *)calloc(*sizeArray,sizeof(long long int));
+    changeSize(sizeArray,&array);
     int i;
     for (i=0;i<*sizeArray;i++)
     {
-        array[i]=getValidElement("Invalid element!! Just enter integer:\t",i);
+        //*array + i = i;
+        (*array+i)=getValidElement("Invalid element!! Just enter integer:\t",i);
     }
-
-}
-//delete an element in array
-void delete(int *sizeArray,long long int *array,int position)
-{
-    int i;
-    for (i=position;i<*sizeArray;i++){
-        array[i]=array[i+1];
-    }
-    (*sizeArray)--;
 }
 //print array to screen
-void output(int *sizeArray,long long int *array)
+void output(int sizeArray,long long int *array)
 {
     int i;
-    for (i=0;i<*sizeArray;i++){
+    printf("\n");
+    for (i=0;i<sizeArray;i++){
         printf("%lld\t",array[i]);
     }
     printf("\n");
-}
-
-void process(int *sizeArray,long long int *array)
-{
-    int *isDuplicate;
-    isDuplicate=(int *)calloc(*sizeArray,sizeof(int));
-    int i;
-    int j;
-    //check if an element duplicate
-    for (i=0;i<*sizeArray-1;i++){
-        for (j=i+1;j<*sizeArray;j++){
-            if (array[i]==array[j]){
-                isDuplicate[i]=1;
-            }
-        }
-    }
-    output(sizeArray,array);
-    for (i=*sizeArray-1;i>=0;i--){
-        if (isDuplicate[i]==1){
-            delete(sizeArray,array,i);
-        }
-    }
-    output(sizeArray,array);
 }
 int main()
 {
     int sizeArray;
     long long int *array;
-    array=(long long int *)malloc(100*sizeof(long long int));
-    input(&sizeArray,array);
-    process(&sizeArray,array);
+    array=(long long int *)malloc(sizeof(long long int));
+    input(&sizeArray,&array);
+    output(sizeArray,array);
     return 0;
 }
 
